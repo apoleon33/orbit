@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dotenv/dotenv.dart';
 import 'package:orbit/api.dart';
+import 'package:orbit/track.dart';
 
 void main() async {
   var env = DotEnv(includePlatformEnvironment: true)..load();
