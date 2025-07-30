@@ -1,4 +1,13 @@
 class Artist {
+  /// The **MusicBrainz ID (MBID)** for this entity.
+  ///
+  /// This unique identifier comes from the [MusicBrainz database](https://musicbrainz.org/),
+  /// an open-source music encyclopedia. It serves as a universal, unambiguous reference
+  /// for artists, albums, tracks, and other musical works.
+  ///
+  /// In APIs like Last.fm's, using an MBID is the most reliable way to fetch
+  /// data for a specific musical entity, ensuring accuracy even when names
+  /// are common, spelled differently, or prone to ambiguity.
   final String mbid;
   final String name;
 
@@ -6,6 +15,9 @@ class Artist {
 
   Artist.createFromData(Map data)
     : this(data["artist"]["#text"], data["artist"]["mbid"]);
+
+  @override
+  String toString() => "name: $name, mbid: $mbid";
 }
 
 enum ImageSize { small, medium, large, extralarge }
@@ -15,10 +27,12 @@ class Image {
   final String url;
 
   Image(this.url, this.imageSize);
+
+  @override
+  String toString() => "url: $url, size: $imageSize";
 }
 
 class Track {
-  // {artist: {mbid: bf629fc0-2d07-4fa3-90dd-1e77629be935, #text: Twin Tribes}, streamable: 0, image: [{size: small, #text: https://lastfm.freetls.fastly.net/i/u/34s/e1c3d18e5e232def118fd0a40da8382c.png}, {size: medium, #text: https://lastfm.freetls.fastly.net/i/u/64s/e1c3d18e5e232def118fd0a40da8382c.png}, {size: large, #text: https://lastfm.freetls.fastly.net/i/u/174s/e1c3d18e5e232def118fd0a40da8382c.png}, {size: extralarge, #text: https://lastfm.freetls.fastly.net/i/u/300x300/e1c3d18e5e232def118fd0a40da8382c.png}], mbid: 578e39d7-d6b0-4a10-ac33-9364432f4906, album: {mbid: , #text: Monolith - Single}, name: Monolith, @attr: {nowplaying: true}, url: https://www.last.fm/music/Twin+Tribes/_/Monolith}
   final Artist artist;
   final List<Image> image;
   final String name;
@@ -36,8 +50,19 @@ class Track {
         data["name"],
         artist: Artist.createFromData(data),
         image: (data["image"] as List)
-            .map((elem) => Image(elem["#text"], ImageSize.small))
+            .map(
+              (elem) => Image(
+                elem["#text"],
+                ImageSize.values.firstWhere(
+                  (size) => size.name == elem["size"],
+                ),
+              ),
+            )
             .toList(),
         url: data["url"],
       );
+
+  @override
+  String toString() =>
+      "Track name: $name \nArtist $artist \nurl: $url \nimages: $image";
 }

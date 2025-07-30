@@ -15,9 +15,7 @@ void main() async {
 
     bool nowPlayingStatus = await api.isUserNowPlaying();
     if (nowPlayingStatus) {
-      print(
-        "Music detected! currently playing ${lastTrack.name} by ${lastTrack.artist.name}",
-      );
+      print("Music detected! currently playing: \n$lastTrack");
     } else {
       print("no music currently playing, retrying in 5s...");
     }
