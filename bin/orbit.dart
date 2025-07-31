@@ -13,7 +13,7 @@ void main() async {
     ),
   );
 
-  while (true) {
+  for (;;) {
     await interface.display();
     sleep(Duration(seconds: 5));
   }
