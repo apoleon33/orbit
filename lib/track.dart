@@ -1,4 +1,4 @@
-class Artist {
+abstract class LastFMEntity {
   /// The **MusicBrainz ID (MBID)** for this entity.
   ///
   /// This unique identifier comes from the [MusicBrainz database](https://musicbrainz.org/),
@@ -6,13 +6,36 @@ class Artist {
   final String mbid;
   final String name;
 
-  Artist(this.name, this.mbid);
+  LastFMEntity(this.name, this.mbid);
 
-  Artist.createFromData(Map data)
-    : this(data["artist"]["#text"], data["artist"]["mbid"]);
+  @override
+  bool operator ==(Object other) {
+    assert(
+      other.runtimeType == Track,
+      "Only Track to Track comparison implemented atm",
+    );
+    return (other as Track).mbid == mbid;
+  }
+
+  @override
+  int get hashCode => mbid.hashCode;
 
   @override
   String toString() => "name: $name, mbid: $mbid";
+}
+
+class Artist extends LastFMEntity {
+  Artist(super.name, super.mbid);
+
+  Artist.createFromData(Map data)
+    : this(data["artist"]["#text"], data["artist"]["mbid"]);
+}
+
+class Album extends LastFMEntity {
+  Album(super.name, super.mbid);
+
+  Album.createFromData(Map data)
+    : this(data["album"]["#text"], data["album"]["mbid"]);
 }
 
 enum ImageSize { small, medium, large, extralarge }
@@ -27,15 +50,17 @@ class Image {
   String toString() => "url: $url, size: $imageSize";
 }
 
-class Track {
+class Track extends LastFMEntity {
   final Artist artist;
+  final Album album;
   final List<Image> image;
-  final String name;
   final String url;
 
   Track(
-    this.name, {
+    super.name,
+    super.mbid, {
     required this.artist,
+    required this.album,
     required this.image,
     required this.url,
   });
@@ -43,7 +68,9 @@ class Track {
   Track.createFromData(Map data)
     : this(
         data["name"],
+        data["mbid"],
         artist: Artist.createFromData(data),
+        album: Album.createFromData(data),
         image: (data["image"] as List)
             .map(
               (elem) => Image(
