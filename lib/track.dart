@@ -2,12 +2,7 @@ class Artist {
   /// The **MusicBrainz ID (MBID)** for this entity.
   ///
   /// This unique identifier comes from the [MusicBrainz database](https://musicbrainz.org/),
-  /// an open-source music encyclopedia. It serves as a universal, unambiguous reference
-  /// for artists, albums, tracks, and other musical works.
-  ///
-  /// In APIs like Last.fm's, using an MBID is the most reliable way to fetch
-  /// data for a specific musical entity, ensuring accuracy even when names
-  /// are common, spelled differently, or prone to ambiguity.
+  /// an open-source music encyclopedia.
   final String mbid;
   final String name;
 

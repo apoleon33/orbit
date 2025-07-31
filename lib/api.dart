@@ -9,7 +9,7 @@ class Params {
   /// The Last.fm username for whom data is requested.
   final String user;
 
-  /// The format of the API response. Possible values are `"json"` (default) or `"xml"` ("xml does break the [LastFM] class use").
+  /// The format of the API response. Possible values are `"json"` (default) or `"xml"` (xml does break the [LastFM] class use).
   final String format;
   final String method;
 
@@ -38,12 +38,11 @@ class LastFM {
   Future<Map> _callApi() async => (await dio.get("$baseUrl$params")).data;
 
   /// Checks if the user is currently playing a track on Last.fm.
-  /// Returns [true] if a track is currently being played, otherwise [false].
   Future<bool> isUserNowPlaying() async =>
       (await _callApi())["recenttracks"]["track"][0]["@attr"] != null;
 
   /// Retrieves the most recent track played by the user.
-  /// Returns a [Track] instance created from the API response data.
+  /// Returns a [Track] instance.
   Future<Track> getLastTrack() async =>
       Track.createFromData((await _callApi())["recenttracks"]["track"][0]);
 }
