@@ -1,3 +1,4 @@
+/// An abstract class that represent what LastFM "entities" (track, albums, artists...) have in common.
 abstract class LastFMEntity {
   /// The **MusicBrainz ID (MBID)** for this entity.
   ///

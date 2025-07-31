@@ -18,6 +18,7 @@ class Interface {
 
   Interface(this.api);
 
+  /// Clears the previously used lines
   void _overwriteLines(int lines) {
     // Move cursor up by 'lines' rows
     stdout.write('\x1B[${lines}A');
@@ -25,6 +26,7 @@ class Interface {
     stdout.write('\x1B[0J');
   }
 
+  // Idk what's happening here honestly it's deepseek
   Future<List<CgColor>?> downloadAndAnalyzeImageMemory(String imageUrl) async {
     try {
       final response = await http.get(Uri.parse(imageUrl));
@@ -56,6 +58,7 @@ class Interface {
     return null;
   }
 
+  /// Returns a string colored like the ones given in arguments
   String createColorPalette(List<CgColor> colors) => colors
       .map((color) => "███".rgb(r: color.r, g: color.g, b: color.b))
       .join();
