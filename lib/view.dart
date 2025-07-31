@@ -14,7 +14,14 @@ class Interface {
   bool? _previousStatus;
   Track? _currentTrack;
 
+  /// The number of colors extracted from the album cover.
   final int colorNUmber = 3;
+
+  /// How many lines the display of the current song takes in the terminal.
+  final int nowPLayingLineNumber = 6;
+
+  /// How many lines the "no music detected" text takes in the terminal.
+  final int notPlayingLineNumber = 1;
 
   Interface(this.api);
 
@@ -36,10 +43,6 @@ class Interface {
         img.Image? image = img.decodeImage(response.bodyBytes);
 
         if (image != null) {
-          // Convertir en format attendu par ColorGram (nécessite adaptation)
-          // Note: Cette partie dépend de comment ColorGram attend les données
-          // Vous pourriez besoin d'écrire dans un buffer mémoire
-
           // Solution temporaire: écrire dans un fichier mémoire
           final tempFile = File('temp_image.jpg');
           await tempFile.writeAsBytes(img.encodeJpg(image));
@@ -72,9 +75,9 @@ class Interface {
     if (lastTrack != _currentTrack) {
       if (_previousStatus != null) {
         if (_previousStatus!) {
-          _overwriteLines(6);
+          _overwriteLines(nowPLayingLineNumber);
         } else {
-          _overwriteLines(1);
+          _overwriteLines(notPlayingLineNumber);
         }
       }
     }
@@ -82,6 +85,7 @@ class Interface {
     if (nowPlayingStatus) {
       if (lastTrack != _currentTrack) {
         //  reload the whole display only when the track changes
+
         List<CgColor> dominantColors = (await downloadAndAnalyzeImageMemory(
           lastTrack.image
               .where((img) => img.imageSize == ImageSize.extralarge)
