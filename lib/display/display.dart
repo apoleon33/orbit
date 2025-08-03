@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:image/image.dart' as img;
 import 'package:orbit/api.dart';
 
+/// Abstract class for the multiples way of displaying the infos from the api (in a terminal, on a led strip...)
 abstract class Display {
   final LastFM api;
 
