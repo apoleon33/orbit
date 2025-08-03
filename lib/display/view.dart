@@ -1,20 +1,13 @@
 import 'dart:io';
 
-import 'package:image/image.dart' as img;
-import 'package:orbit/api.dart';
+import 'package:orbit/display/display.dart';
 import 'package:orbit/track.dart';
 import 'package:tint/tint.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:colorgram/colorgram.dart';
 
-class Interface {
-  final LastFM api;
-
+class Interface extends Display {
   Track? _currentTrack;
-
-  /// The number of colors extracted from the album cover.
-  final int colorNUmber = 3;
 
   /// How many lines the display of the current song takes in the terminal.
   final int nowPLayingLineNumber = 6;
@@ -22,35 +15,7 @@ class Interface {
   /// How many lines the "no music detected" text takes in the terminal.
   final int notPlayingLineNumber = 1;
 
-  Interface(this.api);
-
-  // Idk what's happening here honestly it's deepseek
-  Future<List<CgColor>?> downloadAndAnalyzeImageMemory(String imageUrl) async {
-    try {
-      final response = await http.get(Uri.parse(imageUrl));
-
-      if (response.statusCode == 200) {
-        // Décoder l'image en mémoire
-        img.Image? image = img.decodeImage(response.bodyBytes);
-
-        if (image != null) {
-          // Solution temporaire: écrire dans un fichier mémoire
-          final tempFile = File('temp_image.jpg');
-          await tempFile.writeAsBytes(img.encodeJpg(image));
-
-          List<CgColor> colors = extractColor(tempFile, colorNUmber);
-
-          await tempFile.delete();
-
-          return colors;
-        }
-      }
-    } catch (e) {
-      print('Erreur: $e');
-      return null;
-    }
-    return null;
-  }
+  Interface(super.api);
 
   /// Returns a string colored like the ones given in arguments
   String createColorPalette(List<CgColor> colors) => colors
@@ -75,6 +40,7 @@ class Interface {
     }
   }
 
+  @override
   Future<void> display() async {
     final Track lastTrack = await api.getLastTrack();
 
@@ -84,7 +50,7 @@ class Interface {
       if (lastTrack != _currentTrack) {
         //  reload the whole display only when the track changes
 
-        List<CgColor> dominantColors = (await downloadAndAnalyzeImageMemory(
+        List<CgColor> dominantColors = (await getColorPalette(
           lastTrack.image
               .where((img) => img.imageSize == ImageSize.extralarge)
               .toList()[0]
@@ -101,7 +67,7 @@ class Interface {
       }
     } else {
       _clearTerminal();
-      print("no music currently playing, retrying in 5s...".bold().blue());
+      print("no music currently playing, retrying in 15s...".bold().blue());
     }
   }
 }

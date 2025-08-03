@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dotenv/dotenv.dart';
 import 'package:orbit/api.dart';
-import 'package:orbit/view.dart';
+import 'package:orbit/display/view.dart';
 
 void main() async {
   var env = DotEnv(includePlatformEnvironment: true)..load();
@@ -15,6 +15,6 @@ void main() async {
 
   for (;;) {
     await interface.display();
-    sleep(Duration(seconds: 5));
+    sleep(Duration(seconds: 15));
   }
 }
