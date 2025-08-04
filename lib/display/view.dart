@@ -40,6 +40,26 @@ class Interface extends Display {
     }
   }
 
+  Future<String> formatOutput(Track track) async {
+    List<CgColor> dominantColors = (await getColorPalette(
+      track.image
+          .where((img) => img.imageSize == ImageSize.extralarge)
+          .toList()[0]
+          .url,
+    ))!;
+
+    // let's avoid making one long line
+    String output = "Music detected!\n".bold();
+    output += "${"Name".bold()}:               ${track.name.italic()}\n";
+    output += "${"Album".bold()}:              ${track.album.name.italic()}\n";
+    output += "${"Artist".bold()}:             ${track.artist.name.italic()}\n";
+    output += "${"Image".bold()}:              ${track.image.last.url}\n";
+    output +=
+        "${"Dominant colors".bold()}:    ${createColorPalette(dominantColors)}";
+
+    return output;
+  }
+
   @override
   Future<void> display() async {
     final Track lastTrack = await api.getLastTrack();
@@ -50,18 +70,8 @@ class Interface extends Display {
       if (lastTrack != _currentTrack) {
         //  reload the whole display only when the track changes
 
-        List<CgColor> dominantColors = (await getColorPalette(
-          lastTrack.image
-              .where((img) => img.imageSize == ImageSize.extralarge)
-              .toList()[0]
-              .url,
-        ))!;
-
         _clearTerminal();
-        print(
-          "${"Music detected!\n".bold()}Name: ${lastTrack.name.italic()}\nAlbum: ${lastTrack.album.name.italic()}\nArtist: ${lastTrack.artist.name.italic()}\nImage: ${lastTrack.image.last.url}\nDominant colors: ${createColorPalette(dominantColors)}"
-              .blue(),
-        );
+        print((await formatOutput(lastTrack)).blue());
 
         _currentTrack = lastTrack;
       }
