@@ -10,7 +10,7 @@ abstract class Display {
   final LastFM api;
 
   /// The number of colors extracted from the album cover.
-  final int colorNUmber = 3;
+  final int colorNUmber = 7;
 
   Display(this.api);
 
