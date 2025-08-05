@@ -12,7 +12,7 @@ class Interface extends Display {
   Track? _currentTrack;
 
   /// How many lines the display of the current song takes in the terminal.
-  final int nowPLayingLineNumber = 6;
+  final int nowPLayingLineNumber = 8;
 
   /// How many lines the "no music detected" text takes in the terminal.
   final int notPlayingLineNumber = 1;
@@ -112,18 +112,29 @@ class Interface extends Display {
     List<String> albumCover = (await convertImgToAscii(track))!;
 
     // let's avoid making one long line
-    String output =
-        "$leftPadding${albumCover[0]}$leftPadding${"Music detected!".bold().red()}\n";
+    String output = "$leftPadding${albumCover[0]}";
+    output += "$leftPadding${"Music detected!".bold().red()}\n";
     output += "$leftPadding${albumCover[1]}";
     output += "$leftPadding${"Name".bold().red()}: ${track.name.italic()}\n";
+    output += "$leftPadding${albumCover[2]}";
     output +=
-        "$leftPadding${albumCover[2]}$leftPadding${"Album".bold().red()}: ${track.album.name.italic()}\n";
+        "$leftPadding${"Album".bold().red()}: ${track.album.name.italic()}\n";
+    output += "$leftPadding${albumCover[3]}";
     output +=
-        "$leftPadding${albumCover[3]}$leftPadding${"Artist".bold().red()}: ${track.artist.name.italic()}\n";
+        "$leftPadding${"Artist".bold().red()}: ${track.artist.name.italic()}\n";
+    output += "$leftPadding${albumCover[4]}";
+    output += "$leftPadding${"Image".bold().red()}: ${track.image.last.url}\n";
+    output += "$leftPadding${albumCover[5]}";
+    output += "$leftPadding${createColorPalette(dominantColors)}\n";
+    output += "$leftPadding${albumCover[6]}";
+    output += "$leftPadding$delimiter\n";
+    output += "$leftPadding${albumCover[7]}";
     output +=
-        "$leftPadding${albumCover[4]}$leftPadding${"Image".bold().red()}: ${track.image.last.url}\n";
+        "$leftPadding${"LastFM Username".bold().red()}: ${api.username}\n";
+    output += "$leftPadding${albumCover[8]}";
     output +=
-        "$leftPadding${albumCover[5]}$leftPadding${createColorPalette(dominantColors)}\n";
+        "$leftPadding${"Total account scrobbles".bold().red()}: ${await api.totalScrobble}\n";
+
     for (var row in albumCover.sublist(nowPLayingLineNumber)) {
       output += "$leftPadding$row\n";
     }

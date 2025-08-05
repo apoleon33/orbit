@@ -30,6 +30,8 @@ class LastFM {
   final Params params;
   final String baseUrl = "https://ws.audioscrobbler.com/2.0/";
   final Dio dio = Dio();
+
+  String? totalScrobbles;
   LastFM({required this.params});
 
   /// Makes a GET request to the Last.fm API using the provided parameters.
@@ -43,6 +45,7 @@ class LastFM {
       );
     }
 
+    totalScrobbles = call.data["recenttracks"]["@attr"]["total"];
     return call.data;
   }
 
@@ -54,4 +57,10 @@ class LastFM {
   /// Returns a [Track] instance.
   Future<Track> getLastTrack() async =>
       Track.createFromData((await _callApi())["recenttracks"]["track"][0]);
+
+  String get username => params.user;
+
+  Future<String> get totalScrobble async => (totalScrobbles != null)
+      ? totalScrobbles
+      : (await _callApi())["recenttracks"]["@attr"]["total"];
 }
