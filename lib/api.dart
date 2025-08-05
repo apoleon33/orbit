@@ -30,12 +30,21 @@ class LastFM {
   final Params params;
   final String baseUrl = "https://ws.audioscrobbler.com/2.0/";
   final Dio dio = Dio();
-
   LastFM({required this.params});
 
   /// Makes a GET request to the Last.fm API using the provided parameters.
   /// Returns the response data as a [Map].
-  Future<Map> _callApi() async => (await dio.get("$baseUrl$params")).data;
+  Future<Map> _callApi() async {
+    //  (await dio.get("$baseUrl$params")).data;
+    Response call = await dio.get("$baseUrl$params");
+    if (call.data["error"] != null) {
+      throw Exception(
+        "Error occured while fetching LastmFM's api: ${call.data["message"]}",
+      );
+    }
+
+    return call.data;
+  }
 
   /// Checks if the user is currently playing a track on Last.fm.
   Future<bool> isUserNowPlaying() async =>
