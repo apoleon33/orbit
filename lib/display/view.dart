@@ -123,7 +123,8 @@ class Interface extends Display {
     output +=
         "$leftPadding${"Artist".bold().red()}: ${track.artist.name.italic()}\n";
     output += "$leftPadding${albumCover[4]}";
-    output += "$leftPadding${"Image".bold().red()}: ${track.image.last.url}\n";
+    output +=
+        "$leftPadding${"Image".bold().red()}: ${track.image.last.url.substring("https://lastfm.freetls.fastly.net/i/u/300x300/".length)}\n";
     output += "$leftPadding${albumCover[5]}";
     output += "$leftPadding${createColorPalette(dominantColors)}\n";
     output += "$leftPadding${albumCover[6]}";
