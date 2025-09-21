@@ -5,7 +5,7 @@ import 'package:orbit/display/requestless_display.dart';
 import 'package:orbit/track.dart';
 
 class DisplayManager extends Display {
-  List<RequestlessDisplay> displays = List.empty();
+  List<RequestlessDisplay> displays = List.empty(growable: true);
 
   final int delay;
 
@@ -16,10 +16,10 @@ class DisplayManager extends Display {
     final Track lastTrack = await api.getLastTrack();
 
     for (var display in displays) {
-      display.show(
+      await display.show(
         ColoredTrack.createFromTrack(
           lastTrack,
-          (await getColorPalette(lastTrack.url))!,
+          (await getColorPalette(lastTrack.image[0].url))!,
         ),
       );
     }

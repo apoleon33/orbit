@@ -174,8 +174,19 @@ class Interface extends Display implements RequestlessDisplay {
   }
 
   @override
-  Future<void> show(Track track) {
-    // TODO: implement show
-    throw UnimplementedError();
+  Future<void> show(ColoredTrack track) async {
+    _clearTerminal();
+    print(
+      (await formatOutput(
+        Track(
+          track.name,
+          track.mbid,
+          artist: track.artist,
+          album: track.album,
+          image: track.image,
+          url: track.url,
+        ),
+      )),
+    );
   }
 }
