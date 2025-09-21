@@ -1,3 +1,6 @@
+import 'package:colorgram/colorgram.dart';
+import 'package:image/image.dart';
+
 /// An abstract class that represent what LastFM "entities" (track, albums, artists...) have in common.
 abstract class LastFMEntity {
   /// The **MusicBrainz ID (MBID)** for this entity.
@@ -88,4 +91,29 @@ class Track extends LastFMEntity {
   @override
   String toString() =>
       "Track name: $name \nArtist $artist \nurl: $url \nimages: $image";
+}
+
+/// the [Track] class, but with also the color palette of the album.
+class ColoredTrack extends Track {
+  final List<CgColor> palette;
+  ColoredTrack(
+    super.name,
+    super.mbid,
+    this.palette, {
+    required super.artist,
+    required super.album,
+    required super.image,
+    required super.url,
+  });
+
+  ColoredTrack.createFromTrack(Track track, List<CgColor> palette)
+    : this(
+        track.name,
+        track.mbid,
+        palette,
+        artist: track.artist,
+        album: track.album,
+        image: track.image,
+        url: track.url,
+      );
 }

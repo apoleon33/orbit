@@ -3,12 +3,13 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:image/image.dart' as img;
 import 'package:orbit/display/display.dart';
+import 'package:orbit/display/requestless_display.dart';
 import 'package:orbit/track.dart';
 import 'package:tint/tint.dart';
 
 import 'package:colorgram/colorgram.dart';
 
-class Interface extends Display {
+class Interface extends Display implements RequestlessDisplay {
   Track? _currentTrack;
 
   /// How many lines the display of the current song takes in the terminal.
@@ -33,7 +34,7 @@ class Interface extends Display {
                 .toStringAsFixed(2)
                 .replaceAll(
                   RegExp("0.00"),
-                  char,
+                  char.rgb(r: color.r, g: color.g, b: color.b),
                 ) // weird workaround to avoid percentages on cover
                 .onRgb(r: color.r, g: color.g, b: color.b),
           )
@@ -170,5 +171,11 @@ class Interface extends Display {
       _clearTerminal();
       print("no music currently playing, retrying in 15s...".bold().blue());
     }
+  }
+
+  @override
+  Future<void> show(Track track) {
+    // TODO: implement show
+    throw UnimplementedError();
   }
 }
