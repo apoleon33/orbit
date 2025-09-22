@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dotenv/dotenv.dart';
 import 'package:orbit/api.dart';
 import 'package:orbit/display/display_manager.dart';
