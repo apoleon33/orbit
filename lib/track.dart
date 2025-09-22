@@ -1,5 +1,4 @@
 import 'package:colorgram/colorgram.dart';
-import 'package:image/image.dart';
 
 /// An abstract class that represent what LastFM "entities" (track, albums, artists...) have in common.
 abstract class LastFMEntity {

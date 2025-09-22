@@ -15,13 +15,17 @@ class DisplayManager extends Display {
   Future<void> display() async {
     final Track lastTrack = await api.getLastTrack();
 
-    for (var display in displays) {
-      await display.show(
-        ColoredTrack.createFromTrack(
-          lastTrack,
-          (await getColorPalette(lastTrack.image[0].url))!,
-        ),
-      );
+    bool nowPlayingStatus = await api.isUserNowPlaying();
+
+    if (nowPlayingStatus) {
+      for (var display in displays) {
+        await display.show(
+          ColoredTrack.createFromTrack(
+            lastTrack,
+            (await getColorPalette(lastTrack.image[0].url))!,
+          ),
+        );
+      }
     }
 
     sleep(Duration(seconds: delay));

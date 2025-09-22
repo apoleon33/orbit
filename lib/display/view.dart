@@ -10,8 +10,6 @@ import 'package:tint/tint.dart';
 import 'package:colorgram/colorgram.dart';
 
 class Interface extends Display implements RequestlessDisplay {
-  Track? _currentTrack;
-
   /// How many lines the display of the current song takes in the terminal.
   final int nowPLayingLineNumber = 8;
 
@@ -165,8 +163,6 @@ class Interface extends Display implements RequestlessDisplay {
 
       _clearTerminal();
       print((await formatOutput(lastTrack)));
-
-      _currentTrack = lastTrack;
     } else {
       _clearTerminal();
       print("no music currently playing, retrying in 15s...".bold().blue());
