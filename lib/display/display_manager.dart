@@ -26,6 +26,10 @@ class DisplayManager extends Display {
           ),
         );
       }
+    } else {
+      for (var display in displays) {
+        await display.showNoTrack();
+      }
     }
 
     sleep(Duration(seconds: delay));

@@ -185,4 +185,10 @@ class Interface extends Display implements RequestlessDisplay {
       )),
     );
   }
+
+  @override
+  Future<void> showNoTrack() async {
+    _clearTerminal();
+    print("no music currently playing, retrying in 15s...".bold().blue());
+  }
 }

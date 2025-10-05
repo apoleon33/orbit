@@ -1,6 +1,7 @@
 import 'package:dotenv/dotenv.dart';
 import 'package:orbit/api.dart';
 import 'package:orbit/display/display_manager.dart';
+import 'package:orbit/display/led_display.dart';
 import 'package:orbit/display/view.dart';
 
 void main() async {
@@ -20,6 +21,8 @@ void main() async {
       ),
     ),
   );
+
+  displayManager.displays.add(LedDisplay());
 
   for (;;) {
     await displayManager.display();
