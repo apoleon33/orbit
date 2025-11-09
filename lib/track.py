@@ -1,6 +1,8 @@
 from abc import ABC
 from enum import Enum
 
+from Pylette import Palette
+
 
 class LastFMEntity(ABC):
     """
@@ -67,11 +69,12 @@ class Track(LastFMEntity):
     images: list[Image]
     url: str
 
-    def __init__(self, name, mbid, artist: Artist, album: Album, images: list[Image]):
+    def __init__(self, name, mbid, artist: Artist, album: Album, images: list[Image], url: str):
         super().__init__(mbid, name)
         self.artist = artist
         self.album = album
         self.images = images
+        self.url = url
 
     @staticmethod
     def createFromData(data: dict):
@@ -85,3 +88,17 @@ class Track(LastFMEntity):
             )
 
         return Track(data["name"], data["mbid"], Artist.createFromData(data), Album.createFromData(data), imageList)
+
+
+class ColoredTrack(Track):
+    palette: Palette
+
+    def __init__(self, name, mbid, palette, artist, album, images, url):
+        super().__init__(name, mbid, artist, album, images, url)
+
+        self.palette = palette
+
+    @staticmethod
+    def createFromTrack(track: Track, palette: Palette):
+        return ColoredTrack(name=track.name, mbid=track.mbid, palette=palette, artist=track.artist, album=track.album,
+                            images=track.images, url=track.url )
