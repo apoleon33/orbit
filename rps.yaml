@@ -1,6 +1,0 @@
-scripts:
-  run: /usr/bin/dart run bin/orbit.dart
-  build:
-    raspberry:
-      $script: /usr/bin/dart compile exe --target-arch arm64 bin/orbit.dart
-      $description: Compile for the raspberry.
