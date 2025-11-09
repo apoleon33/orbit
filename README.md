@@ -1,2 +1,1 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+> This branch aim at rewriting orbit in python for an easier code to read and use
