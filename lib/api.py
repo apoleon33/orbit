@@ -11,6 +11,8 @@ class Params:
     format: str
     method: str
 
+    _totalScrobbles: int | None = None
+
     def __init__(self, apiKey, user, format="json", method="user.getrecenttracks"):
         self.apiKey = apiKey
         self.user = user
@@ -37,7 +39,7 @@ class LastFM:
         if "error" in call:
             raise RuntimeError(f"Error occured while fetching LastmFM's api: {call['message']}")
 
-        self.totalScrobbles = call["recenttracks"]["@attr"]["total"]
+        self._totalScrobbles = call["recenttracks"]["@attr"]["total"]
 
         return call
 
@@ -48,6 +50,7 @@ class LastFM:
 
     def getLastTrack(self) -> Track:
         """Retrieves the most recent track played by the user."""
+
         return Track.createFromData(self._callApi()["recenttracks"]["track"][0])
 
     @property
@@ -55,4 +58,4 @@ class LastFM:
 
     @property
     def totalScrobbles(self): return self.totalScrobbles if self.totalScrobbles is not None else \
-    self._callApi()["recenttracks"]["@attr"]["total"]
+        self._callApi()["recenttracks"]["@attr"]["total"]

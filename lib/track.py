@@ -41,7 +41,7 @@ class Album(LastFMEntity):
 
     @staticmethod
     def createFromData(data: dict):
-        return Album(data["album"]["mbid"], data["album"]["name"])
+        return Album(data["album"]["mbid"], data["album"]["#text"])
 
 
 class ImageSize(Enum):
@@ -79,15 +79,16 @@ class Track(LastFMEntity):
     @staticmethod
     def createFromData(data: dict):
         imageList = []
-        for image in data["images"]:
+        for image in data["image"]:
             imageList.append(
                 Image(
-                    image["#text"],
-                    ImageSize.extraLarge
+                    ImageSize.extraLarge,
+                    image["#text"]
                 )
             )
 
-        return Track(data["name"], data["mbid"], Artist.createFromData(data), Album.createFromData(data), imageList)
+        return Track(data["name"], data["mbid"], Artist.createFromData(data), Album.createFromData(data), imageList,
+                     data["url"])
 
 
 class ColoredTrack(Track):
@@ -101,4 +102,4 @@ class ColoredTrack(Track):
     @staticmethod
     def createFromTrack(track: Track, palette: Palette):
         return ColoredTrack(name=track.name, mbid=track.mbid, palette=palette, artist=track.artist, album=track.album,
-                            images=track.images, url=track.url )
+                            images=track.images, url=track.url)
