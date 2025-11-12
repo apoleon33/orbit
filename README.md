@@ -1,1 +1,2 @@
-> This branch aim at rewriting orbit in python for an easier code to read and use
+# Orbit
+## Control your led based on the current music 🎵
