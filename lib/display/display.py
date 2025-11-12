@@ -1,3 +1,4 @@
+import os
 from abc import ABC, abstractmethod
 
 import requests
@@ -24,6 +25,7 @@ class Display(ABC):
 
         palette = extract_colors(image='temp.jpg', palette_size=self.colorNumber)
 
+        os.remove("temp.jpg")
         return palette
 
     @abstractmethod
