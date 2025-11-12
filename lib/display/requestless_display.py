@@ -5,3 +5,5 @@ from lib.track import ColoredTrack
 
 class RequestlessDisplay(ABC):
     def show(self, track: ColoredTrack): pass
+
+    def showNotPlaying(self): pass

@@ -46,3 +46,7 @@ class Interface(Display, RequestlessDisplay):
     def show(self, track):
         self._clearTerminal()
         print(self.format_output(track))
+
+    def showNotPlaying(self):
+        self._clearTerminal()
+        print("No music currently playing!")

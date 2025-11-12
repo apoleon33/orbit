@@ -26,5 +26,8 @@ class DisplayManager(Display):
                         self.getColorPalette(lastTrack.images[0].url),
                     )
                 )
+        else:
+            for display in self.displays:
+                display.showNotPlaying()
 
         time.sleep(self.delay)
