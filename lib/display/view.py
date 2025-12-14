@@ -1,11 +1,44 @@
 # python
 import os
 
+import climage
+import requests
+
 from lib.display.display import Display
 from lib.display.requestless_display import RequestlessDisplay
 
+class Ansi:
+    DEFAULT = "[0m"
+    BLACK = "30m"
+    RED = "[31m"
+    GREEN = "[32m"
+    YELLOW = "[33m"
+    BLUE = "[34m"
+    MAGENTA = "[35m"
+    CYAN = "[36m"
+    WHITE = "[37m"
+    BRIGHT_BLACK = "[90m"
+    BRIGHT_RED = "[91m"
+    BRIGHT_GREEN = "[92m"
+    BRIGHT_YELLOW = "[93m"
+    BRIGHT_BLUE = "[94m"
+    BRIGHT_MAGENTA = "[95m"
+    BRIGHT_CYAN = "[96m"
+    BRIGHT_WHITE = "[97m"
+
+    DEFAULT_FORMATTING = "[22m"
+    BOLD = "[1m"
+    UNDERLINE = "[4m"
+    REVERSED = "[7m"
+    POSITIVE = "[27m"
+
+    @staticmethod
+    def formatText(content, *args):
+        return f"{''.join(args)}{content}{Ansi.DEFAULT}"
+
 
 class Interface(Display, RequestlessDisplay):
+    padding = "     "
     def __init__(self, api):
         super().__init__(api)
         self.now_playing_line_number = 8
@@ -21,13 +54,25 @@ class Interface(Display, RequestlessDisplay):
             os.system("clear")
 
     def format_output(self, track) -> str:
-        output = "Music detected!\n"
+        img = requests.get(track.images[0].url).content
+        tempFile = open("temp.jpg", "wb")
 
-        output += f"Name: {track.name}\n"
-        output += f"Artist: {track.artist.name}\n"
-        output += f"Album: {track.album.name}\n"
-        output += f"{self.delimiter}\n"
-        output += f"LastFM Username: {self.api.username}\n"
+        tempFile.write(img)
+        tempFile.close()
+
+        imageArt = climage.convert('temp.jpg', width=40).split("[0m")
+
+        output = f"{imageArt[0]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Music detected!', Ansi.BOLD, Ansi.RED)}"
+        output += f"{imageArt[1]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Name: ', Ansi.BOLD, Ansi.RED)}{track.name}"
+        output += f"{imageArt[2]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Artist: ', Ansi.BOLD, Ansi.RED)}{track.artist.name}"
+        output += f"{imageArt[3]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Album: ', Ansi.BOLD, Ansi.RED)}{track.album.name}"
+        output += f"{imageArt[4]}{Ansi.DEFAULT}{self.padding}{self.delimiter}"
+        output += f"{imageArt[5]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('LastFM Username: ', Ansi.BOLD, Ansi.RED)}{self.api.username}"
+
+        for line in imageArt[6:]:
+            output += f"{line}"
+
+        output += Ansi.DEFAULT
 
         return output
 

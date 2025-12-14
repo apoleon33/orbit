@@ -32,7 +32,7 @@ class Artist(LastFMEntity):
 
     @staticmethod
     def createFromData(data: dict):
-        return Artist(data["artist"]["#text"], data["artist"]["mbid"])
+        return Artist(data["artist"]["mbid"], data["artist"]["#text"])
 
 
 class Album(LastFMEntity):
