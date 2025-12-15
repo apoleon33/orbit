@@ -74,6 +74,7 @@ class Interface(Display, RequestlessDisplay):
 
         output += Ansi.DEFAULT
 
+
         return output
 
     def display(self):
