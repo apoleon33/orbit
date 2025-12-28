@@ -10,3 +10,11 @@
 
 # Orbit
 **🎵 Control your led based on the current music 🎵**
+
+# TODO-LIST
+- [ ] The actual LED part (duh)
+- [ ] rework everything so that it's more customizable:
+  - [ ] different effects
+  - [ ] different ways to get the music data (spotify, LastFM, manually...)
+  - [ ] different usage of the music data (display on LED strip, link with hue ridge and whatnot)
+  - [ ] Web interface to customize everything

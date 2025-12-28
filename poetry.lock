@@ -151,6 +151,22 @@ files = [
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
+name = "climage"
+version = "0.2.2"
+description = "Convert images to beautiful ANSI escape codes"
+optional = false
+python-versions = ">=3.2"
+groups = ["main"]
+files = [
+    {file = "climage-0.2.2-py3-none-any.whl", hash = "sha256:0a820c7e9c51aa0f720dd3039247848db3c42ebf62475407ec33442e7919b6ab"},
+    {file = "climage-0.2.2.tar.gz", hash = "sha256:e6116b2f5f3d313adb0856657efe4a6d119e2218cdef23c28a993d94b871ab8e"},
+]
+
+[package.dependencies]
+kdtree = "*"
+Pillow = "*"
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
@@ -188,6 +204,18 @@ groups = ["main"]
 files = [
     {file = "joblib-1.5.2-py3-none-any.whl", hash = "sha256:4e1f0bdbb987e6d843c70cf43714cb276623def372df3c22fe5266b2670bc241"},
     {file = "joblib-1.5.2.tar.gz", hash = "sha256:3faa5c39054b2f03ca547da9b2f52fde67c06240c31853f306aea97f13647b55"},
+]
+
+[[package]]
+name = "kdtree"
+version = "0.16"
+description = "A Python implemntation of a kd-tree"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "kdtree-0.16-py2.py3-none-any.whl", hash = "sha256:083945db69bc3cf0d349d8d0efe66c056de28d1c2f1e81f762dc5ce46f0dcf0a"},
+    {file = "kdtree-0.16.tar.gz", hash = "sha256:386df6c7816a05e0fab974e3035df944f99ef68b5615f4a416771391e33d7534"},
 ]
 
 [[package]]
@@ -698,4 +726,4 @@ zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10"
-content-hash = "d534d73201c91b98a4a9c6a17b2dcb36389c72a5a9e8f53b6ca00245319da85b"
+content-hash = "619de566a6d051961084a4387d2d7804e9bb85d5ee75c4de6beb88e588e531cb"
