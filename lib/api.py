@@ -16,6 +16,7 @@ class Params(AppSettings):
 
     def __init__(self, config: ConfigFile, format="json", method="user.getrecenttracks"):
         super().__init__(config)
+        assert self.config.lastfm is not None, "Lastfm configuration not found in config file."
         self.apiKey = self.config.lastfm.api_key
         self.user = self.config.lastfm.username
         self.format = format

@@ -29,7 +29,7 @@ class ConfigFile:
 
     @property
     def lastfm(self):
-        """ Configuration for Last.fm API, `None` if LASTFM isn't selected as the source"""
+        """ Configuration for Last.fm API, `None` if LASTFM isn't selected as the source."""
         return self.Lastfm(
             api_key=self.__config['LASTFM']['api_key'],
             username=self.__config['LASTFM']['username'],
