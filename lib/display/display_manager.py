@@ -1,18 +1,21 @@
 import time
 
+from lib.user_config import AppSettings, ConfigFile
 from lib.display.display import Display
 from lib.display.requestless_display import RequestlessDisplay
 from lib.track import ColoredTrack
 
 
-class DisplayManager(Display):
+class DisplayManager(Display, AppSettings):
     displays: list[RequestlessDisplay] = []
 
     delay: int
 
-    def __init__(self, api_key, delay=15):
+    def __init__(self, api_key, config: ConfigFile):
         super().__init__(api_key)
-        self.delay = delay
+
+        AppSettings.__init__(self, config)
+        self.delay = self.config.refresh_interval
 
     def display(self):
         lastTrack = self.api.getLastTrack()

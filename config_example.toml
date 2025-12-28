@@ -1,0 +1,3 @@
+[general]
+# The delay between each api call, in seconds.
+refresh_interval = 15
