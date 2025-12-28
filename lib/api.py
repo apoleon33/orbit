@@ -1,9 +1,10 @@
 import requests
 
 from lib.track import Track
+from lib.user_config import ConfigFile, AppSettings
 
 
-class Params:
+class Params(AppSettings):
     apiKey: str
 
     user: str
@@ -13,9 +14,10 @@ class Params:
 
     _totalScrobbles: int | None = None
 
-    def __init__(self, apiKey, user, format="json", method="user.getrecenttracks"):
-        self.apiKey = apiKey
-        self.user = user
+    def __init__(self, config: ConfigFile, format="json", method="user.getrecenttracks"):
+        super().__init__(config)
+        self.apiKey = self.config.lastfm.api_key
+        self.user = self.config.lastfm.username
         self.format = format
         self.method = method
 

@@ -1,3 +1,14 @@
 [general]
 # The delay between each api call, in seconds.
 refresh_interval = 15
+
+# The API to use to query the music from
+# possible values: ["LASTFM"]
+source = "LASTFM"
+
+[LASTFM] # useful when source is "LASTFM"
+# Your Last.fm API key
+api_key = ""
+
+# Your Last.fm username
+username = "apoleon33"
