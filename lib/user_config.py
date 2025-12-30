@@ -22,6 +22,12 @@ class ConfigFile:
             Possible values: ['LASTFM']"""
         return self.__config['general']['source']
 
+    @property
+    def outputs(self) -> list[str]:
+        """List of medium the color palette will be displayed to
+            Possible values: ['terminal', 'LED'] """
+        return self.__config['general']['outputs']
+
     @dataclass
     class Lastfm:
         api_key: str
@@ -35,8 +41,22 @@ class ConfigFile:
             username=self.__config['LASTFM']['username'],
         ) if self.source == 'LASTFM' else None
 
+    @dataclass
+    class Terminal:
+        cover_dimensions: int
+
+    @property
+    def terminal(self):
+        """ Configuration for Terminal display settings, `None` if Terminal isn't selected as a medium."""
+        return self.Terminal(
+            cover_dimensions=self.__config['terminal']['cover_dimension'],
+        ) if "terminal" in self.outputs else None
+
 
 # Make your class inheritate this one if it needs access to user configuration
 class AppSettings(ABC):
+    """
+    Gives access to user configuration settings.
+    """
     def __init__(self, config: ConfigFile):
         self.config = config

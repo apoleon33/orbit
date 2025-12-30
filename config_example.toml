@@ -6,9 +6,17 @@ refresh_interval = 15
 # possible values: ["LASTFM"]
 source = "LASTFM"
 
-[LASTFM] # useful when source is "LASTFM"
+# List of medium the color palette will be displayed to
+# Possible values: ["terminal", "LED"]
+outputs=["terminal"]
+
+[LASTFM]
 # Your Last.fm API key
 api_key = ""
 
 # Your Last.fm username
 username = "apoleon33"
+
+[terminal]
+# Size of the album cover displayed
+cover_dimension = 20

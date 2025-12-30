@@ -6,18 +6,30 @@ from lib.display.view import Interface
 if __name__ == "__main__":
     configFile = ConfigFile("config_example.toml")
 
+    match configFile.source:
+        case "LASTFM":
+            source = LastFM(
+                Params(configFile),
+            )
+        case _:
+            raise RuntimeError(
+                f"Source '{configFile.source}' found in config file does not match any of the possible values ('LASTFM')")
+
     displayManager = DisplayManager(
-        LastFM(
-            Params(configFile),
-        ),
+        source,
         configFile
     )
 
-    displayManager.displays.append(Interface(
-        LastFM(
-            Params(configFile),
-        )
-    ))
+    for output in configFile.outputs:
+        match output:
+            case "terminal":
+                displayManager.displays.append(Interface(
+                    source,
+                    configFile
+                ))
+            case _:
+                raise RuntimeError(
+                    f"Output '{output}' found in config file does not match any of the possible values ('terminal', 'LED')")
 
     while True:
         displayManager.display()

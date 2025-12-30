@@ -6,6 +6,8 @@ import requests
 
 from lib.display.display import Display
 from lib.display.requestless_display import RequestlessDisplay
+from lib.user_config import AppSettings, ConfigFile
+
 
 class Ansi:
     DEFAULT = "[0m"
@@ -37,14 +39,15 @@ class Ansi:
         return f"{''.join(args)}{content}{Ansi.DEFAULT}"
 
 
-class Interface(Display, RequestlessDisplay):
+class Interface(Display, RequestlessDisplay, AppSettings):
     padding = "     "
-    def __init__(self, api):
+    def __init__(self, api, configFile: ConfigFile):
         super().__init__(api)
+        AppSettings.__init__(self, configFile)
         self.now_playing_line_number = 8
         self.not_playing_line_number = 1
         self.left_padding = "   "
-        self.cover_dimensions = 20
+        self.cover_dimensions = self.config.terminal.cover_dimensions
         self.delimiter = "------------------------"
 
     def _clearTerminal(self):
@@ -67,7 +70,10 @@ class Interface(Display, RequestlessDisplay):
         output += f"{imageArt[2]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Artist: ', Ansi.BOLD, Ansi.RED)}{track.artist.name}"
         output += f"{imageArt[3]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Album: ', Ansi.BOLD, Ansi.RED)}{track.album.name}"
         output += f"{imageArt[4]}{Ansi.DEFAULT}{self.padding}{self.delimiter}"
-        output += f"{imageArt[5]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('LastFM Username: ', Ansi.BOLD, Ansi.RED)}{self.api.username}"
+
+        output += f"{imageArt[5]}{Ansi.DEFAULT}{self.padding}"
+        if self.config.source == "LASTFM":
+            output += f"{Ansi.formatText('LastFM Username: ', Ansi.BOLD, Ansi.RED)}{self.api.username}"
 
         for line in imageArt[6:]:
             output += f"{line}"
