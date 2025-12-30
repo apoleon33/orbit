@@ -5,6 +5,7 @@ from lib.user_config import ConfigFile, AppSettings
 
 
 class Params(AppSettings):
+    """Class representing the parameters needed to call Last.fm's API."""
     apiKey: str
 
     user: str
@@ -27,6 +28,7 @@ class Params(AppSettings):
 
 
 class LastFM:
+    """Class to interact with Last.fm's API."""
     params: Params
 
     baseUrl: str = "https://ws.audioscrobbler.com/2.0/"

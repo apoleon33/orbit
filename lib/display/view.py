@@ -40,6 +40,7 @@ class Ansi:
 
 
 class Interface(Display, RequestlessDisplay, AppSettings):
+    """Display the album cover as well as the tracks information in the terminal."""
     padding = "     "
     def __init__(self, api, configFile: ConfigFile):
         super().__init__(api)

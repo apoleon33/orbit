@@ -31,7 +31,9 @@ class ConfigFile:
     @dataclass
     class Lastfm:
         api_key: str
+        "Your Last.fm API key"
         username: str
+        "Your Last.fm username"
 
     @property
     def lastfm(self):
@@ -44,6 +46,7 @@ class ConfigFile:
     @dataclass
     class Terminal:
         cover_dimensions: int
+        "Size of the album cover displayed"
 
     @property
     def terminal(self):

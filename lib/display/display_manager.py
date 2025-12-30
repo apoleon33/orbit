@@ -7,6 +7,7 @@ from lib.track import ColoredTrack
 
 
 class DisplayManager(Display, AppSettings):
+    """Manages multiple displays to allow displaying the track information on multiple mediums from one API call."""
     displays: list[RequestlessDisplay] = []
 
     delay: int
