@@ -9,12 +9,15 @@
 </p>
 
 # Orbit
-**🎵 Control your led based on the current music 🎵**
+**🎵 Display your music on anything 🎵**
+
+Orbit allows you to display the album cover of the music currently playing on a variety of existing mediums, from your terminal to a LED strip.
 
 # TODO-LIST
 - [ ] The actual LED part (duh)
 - [ ] rework everything so that it's more customizable:
   - [ ] different effects
   - [ ] different ways to get the music data (spotify, LastFM, manually...)
-  - [ ] different usage of the music data (display on LED strip, link with hue ridge and whatnot)
+  - [ ] different usage of the music data (display on LED strip, link with hue bridge and whatnot)
   - [ ] Web interface to customize everything
+  - [x] config file

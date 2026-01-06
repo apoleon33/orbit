@@ -31,9 +31,9 @@ class ConfigFile:
     @dataclass
     class Lastfm:
         api_key: str
-        "Your Last.fm API key"
+        "Your Last.fm API key."
         username: str
-        "Your Last.fm username"
+        "Your Last.fm username."
 
     @property
     def lastfm(self):
