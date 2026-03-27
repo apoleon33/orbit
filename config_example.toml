@@ -12,7 +12,7 @@ outputs=["terminal"]
 
 [LASTFM]
 # Your Last.fm API key
-api_key = ""
+api_key = "bfdbe9c05993f072d2b4c9192fecb555"
 
 # Your Last.fm username
 username = "apoleon33"

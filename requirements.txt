@@ -4,3 +4,4 @@ pylette>=5.1.1,<5.2.0
 climage>=0.2.2,<0.3.0
 
 toml~=0.10.2
+fire

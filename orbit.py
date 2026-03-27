@@ -1,9 +1,13 @@
+import fire
+
 from lib.api import LastFM, Params
-from lib.user_config import ConfigFile
+from lib.user_config import ConfigFile, Arguments
 from lib.display.display_manager import DisplayManager
 from lib.display.view import Interface
 
 if __name__ == "__main__":
+    args = Arguments()
+    fire.Fire(args)
     configFile = ConfigFile("config_example.toml")
 
     match configFile.source:
