@@ -33,5 +33,3 @@ class DisplayManager(Display, AppSettings):
         else:
             for display in self.displays:
                 display.showNotPlaying()
-
-        time.sleep(self.delay)
