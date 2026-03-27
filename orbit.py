@@ -52,5 +52,9 @@ if __name__ == "__main__":
                 raise RuntimeError(
                     f"Output '{output}' found in config file does not match any of the possible values ('terminal', 'LED')")
 
-    while True:
+    if argument.once:
         displayManager.display()
+    else:
+        while True:
+            displayManager.display()
+            time.sleep(configFile.refresh_interval)
