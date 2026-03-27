@@ -1,13 +1,30 @@
-import fire
+import time
 
 from lib.api import LastFM, Params
 from lib.user_config import ConfigFile, Arguments
 from lib.display.display_manager import DisplayManager
 from lib.display.view import Interface
 
+import getopt, sys
+
 if __name__ == "__main__":
-    args = Arguments()
-    fire.Fire(args)
+    # basic command line handling
+    args = sys.argv[1:]
+    options = "ho"
+    long_options = ["help", "once"]
+
+    argument = Arguments()
+
+    try:
+        arguments, values = getopt.getopt(args, options, long_options)
+        for currentArg, currentVal in arguments:
+            if currentArg in ("-h", "--help"):
+                print("TODO: do help part")
+            elif currentArg in ("-o", "--once"):
+                argument.once = True
+    except getopt.error as err:
+        print(str(err))
+
     configFile = ConfigFile("config_example.toml")
 
     match configFile.source:
