@@ -25,7 +25,7 @@ if __name__ == "__main__":
     except getopt.error as err:
         print(str(err))
 
-    configFile = ConfigFile("config_example.toml")
+    configFile = ConfigFile("config.toml")
 
     match configFile.source:
         case "LASTFM":
