@@ -64,7 +64,7 @@ class Interface(Display, RequestlessDisplay, AppSettings):
         tempFile.write(img)
         tempFile.close()
 
-        imageArt = climage.convert('temp.jpg', width=40).split("[0m")
+        imageArt = climage.convert('temp.jpg', width=self.cover_dimensions).split("[0m")
 
         output = f"{imageArt[0]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Music detected!', Ansi.BOLD, Ansi.RED)}"
         output += f"{imageArt[1]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Name: ', Ansi.BOLD, Ansi.RED)}{track.name}"
