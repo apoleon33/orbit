@@ -63,3 +63,13 @@ class AppSettings(ABC):
     """
     def __init__(self, config: ConfigFile):
         self.config = config
+
+class Arguments:
+    """
+    Class handling command line arguments.
+    """
+
+    once: bool
+    """If set to true, the program will run only once and then exit."""
+    def __init__(self, once: bool=False):
+        self.once = once
