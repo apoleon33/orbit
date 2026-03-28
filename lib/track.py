@@ -19,8 +19,7 @@ class LastFMEntity(ABC):
         self.name = name
 
     def __eq__(self, __value):
-        assert type(__value) is Track, "Only Track to Track comparison implemented atm"
-        return __value.mbid == self.mbid
+        return __value.name == self.name
 
     def __str__(self):
         return f"name: {self.name}, mbid: {self.mbid}"
@@ -77,6 +76,12 @@ class Track(LastFMEntity):
         self.url = url
 
     @staticmethod
+    def empty() -> Track:
+        """ Create an empty track """
+        return Track("", "", Artist("", ""), Album( "", ""), [], "")
+
+
+    @staticmethod
     def createFromData(data: dict):
         imageList = []
         for image in data["image"]:
@@ -89,6 +94,9 @@ class Track(LastFMEntity):
 
         return Track(data["name"], data["mbid"], Artist.createFromData(data), Album.createFromData(data), imageList,
                      data["url"])
+
+    def __eq__(self, other):
+        return self.name == other.name and self.artist == other.artist and self.album == other.album
 
 
 class ColoredTrack(Track):
