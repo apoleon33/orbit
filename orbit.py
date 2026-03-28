@@ -4,7 +4,7 @@ from lib.display.display_manager import DisplayManager
 from lib.display.view import Interface
 
 if __name__ == "__main__":
-    configFile = ConfigFile("config_example.toml")
+    configFile = ConfigFile("config.toml")
 
     match configFile.source:
         case "LASTFM":
