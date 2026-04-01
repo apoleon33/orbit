@@ -39,7 +39,7 @@ class Ansi:
         return f"{''.join(args)}{content}{Ansi.DEFAULT}"
 
 
-class Interface(Display, RequestlessDisplay, AppSettings):
+class Terminal(Display, RequestlessDisplay, AppSettings):
     """Display the album cover as well as the tracks information in the terminal."""
     padding = "     "
     def __init__(self, api, configFile: ConfigFile):

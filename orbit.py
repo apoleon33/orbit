@@ -3,7 +3,7 @@ import time
 from lib.api import LastFM, Params
 from lib.user_config import ConfigFile, Arguments
 from lib.display.display_manager import DisplayManager
-from lib.display.view import Interface
+from lib.display.view import Terminal
 
 import getopt, sys
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     for output in configFile.outputs:
         match output:
             case "terminal":
-                displayManager.displays.append(Interface(
+                displayManager.displays.append(Terminal(
                     source,
                     configFile
                 ))
