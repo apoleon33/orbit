@@ -11,7 +11,7 @@ class Display(ABC):
     api: LastFM
 
     # The number of colors extracted from the album cover.
-    colorNumber:int = 6
+    colorNumber:int = 12
 
     def __init__(self, api: LastFM):
         self.api = api

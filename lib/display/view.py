@@ -38,6 +38,10 @@ class Ansi:
     def formatText(content, *args):
         return f"{''.join(args)}{content}{Ansi.DEFAULT}"
 
+    @staticmethod
+    def applyColor(color: tuple):
+        assert len(color) == 3
+        return f"\033[38;2;{color[0]};{color[1]};{color[2]}m"
 
 class Terminal(Display, RequestlessDisplay, AppSettings):
     """Display the album cover as well as the tracks information in the terminal."""
@@ -66,6 +70,8 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
 
         imageArt = climage.convert('temp.jpg', width=self.cover_dimensions).split("[0m")
 
+        colorPalette = self.getColorPalette(track.images[0].url)
+
         output = f"{imageArt[0]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Music detected!', Ansi.BOLD, Ansi.RED)}"
         output += f"{imageArt[1]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Name: ', Ansi.BOLD, Ansi.RED)}{track.name}"
         output += f"{imageArt[2]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Artist: ', Ansi.BOLD, Ansi.RED)}{track.artist.name}"
@@ -76,8 +82,19 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
         if self.config.source == "LASTFM":
             output += f"{Ansi.formatText('LastFM Username: ', Ansi.BOLD, Ansi.RED)}{self.api.username}"
 
-        for line in imageArt[6:]:
-            output += f"{line}"
+
+        # display the color palette blocks (2 for for 2 lines)
+        output += f"{imageArt[6]}"
+        output += f"{imageArt[7]}{Ansi.DEFAULT}{self.padding}"
+        for color in colorPalette.colors[0:6]:
+            output += f"{Ansi.applyColor(color.rgb)}███"
+
+        output += f"{imageArt[8]}{Ansi.DEFAULT}{self.padding}"
+        for color in colorPalette.colors[6:]:
+            output += f"{Ansi.applyColor(color.rgb)}███"
+
+        for line in imageArt[9:]:
+            output += f"{line}{Ansi.DEFAULT}"
 
         output += Ansi.DEFAULT
 
