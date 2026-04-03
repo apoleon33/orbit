@@ -68,7 +68,13 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
         tempFile.write(img)
         tempFile.close()
 
-        imageArt = climage.convert('temp.jpg', width=self.cover_dimensions).split("[0m")
+        imageArt = climage.convert('temp.jpg',
+                                   is_truecolor=self.config.terminal.color_depth == "true_color",
+                                   is_256color=self.config.terminal.color_depth == "256",
+                                   is_16color= self.config.terminal.color_depth == "16",
+                                   is_8color=self.config.terminal.color_depth == "8",
+                                   width=self.cover_dimensions
+                                   ).split("[0m")
 
         colorPalette = self.getColorPalette(track.images[0].url)
 

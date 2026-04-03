@@ -48,12 +48,23 @@ class ConfigFile:
         cover_dimensions: int
         "Size of the album cover displayed"
 
+        _color_depth: str
+
+        @property
+        def color_depth(self) -> str:
+            """Color depth of the album cover, possible values: ['true_color', '256', '16', '8']"""
+            assert self._color_depth in ['true_color', '256', '16', '8'], f"Color depth not one of the possible values, got {self._color_depth}, expected 'true_color', '256', '16', '8'"
+            return self._color_depth
+
     @property
     def terminal(self):
         """ Configuration for Terminal display settings, `None` if Terminal isn't selected as a medium."""
         return self.Terminal(
             cover_dimensions=self.__config['terminal']['cover_dimension'],
+            _color_depth=self.__config['terminal']['color_depth']
         ) if "terminal" in self.outputs else None
+
+
 
 
 # Make your class inheritate this one if it needs access to user configuration

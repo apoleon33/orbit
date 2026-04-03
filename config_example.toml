@@ -20,3 +20,6 @@ username = "apoleon33"
 [terminal]
 # Size of the album cover displayed
 cover_dimension = 20
+
+# Color depth of the album cover, possible values: ["true_color", "256", "16", "8"]
+color_depth = "256"
