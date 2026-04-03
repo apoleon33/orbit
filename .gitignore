@@ -306,5 +306,5 @@ http-client.private.env.json
 # config file
 config.toml
 
-# image file
+# temporary image file
 temp.jpg
