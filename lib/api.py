@@ -35,6 +35,8 @@ class LastFM:
 
     totalScrobbles: str | None
 
+    ERROR_MESSAGE = "Error occured while fetching LastmFM's api:"
+
     def __init__(self, params: Params):
         self.params = params
 
@@ -42,7 +44,7 @@ class LastFM:
         call = requests.get(f"{self.baseUrl}{self.params}").json()
 
         if "error" in call:
-            raise RuntimeError(f"Error occured while fetching LastmFM's api: {call['message']}")
+            raise RuntimeError(f"{self.ERROR_MESSAGE} {call['message']}")
 
         self._totalScrobbles = call["recenttracks"]["@attr"]["total"]
 
