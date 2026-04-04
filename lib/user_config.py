@@ -2,6 +2,7 @@ from abc import ABC
 from dataclasses import dataclass
 
 import toml
+from click import argument
 
 
 class ConfigFile:
@@ -84,3 +85,16 @@ class Arguments:
     """If set to true, the program will run only once and then exit."""
     def __init__(self, once: bool=False):
         self.once = once
+
+    @staticmethod
+    def createFromGetOpt(output: tuple) -> Arguments:
+        """create an Arguments object from those acquired via getopt"""
+        argument = Arguments()
+        arguments, value = output
+        for currentArg, currentVal in arguments:
+            if currentArg in ("-h", "--help"):
+                print("TODO: do help part")
+            elif currentArg in ("-o", "--once"):
+                argument.once = True
+
+        return argument

@@ -16,12 +16,7 @@ if __name__ == "__main__":
     argument = Arguments()
 
     try:
-        arguments, values = getopt.getopt(args, options, long_options)
-        for currentArg, currentVal in arguments:
-            if currentArg in ("-h", "--help"):
-                print("TODO: do help part")
-            elif currentArg in ("-o", "--once"):
-                argument.once = True
+        argument = Arguments.createFromGetOpt(getopt.getopt(args, options, long_options))
     except getopt.error as err:
         print(str(err))
 
