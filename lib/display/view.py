@@ -1,8 +1,11 @@
 # python
+import math
 import os
+from operator import indexOf
 
 import climage
 import requests
+from Pylette import Color, Palette
 
 from lib.display.display import Display
 from lib.display.requestless_display import RequestlessDisplay
@@ -43,9 +46,11 @@ class Ansi:
         assert len(color) == 3
         return f"\033[38;2;{color[0]};{color[1]};{color[2]}m"
 
+
 class Terminal(Display, RequestlessDisplay, AppSettings):
     """Display the album cover as well as the tracks information in the terminal."""
     padding = "     "
+
     def __init__(self, api, configFile: ConfigFile):
         super().__init__(api)
         AppSettings.__init__(self, configFile)
@@ -71,25 +76,33 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
         imageArt = climage.convert('temp.jpg',
                                    is_truecolor=self.config.terminal.color_depth == "true_color",
                                    is_256color=self.config.terminal.color_depth == "256",
-                                   is_16color= self.config.terminal.color_depth == "16",
+                                   is_16color=self.config.terminal.color_depth == "16",
                                    is_8color=self.config.terminal.color_depth == "8",
                                    width=self.cover_dimensions
                                    ).split("[0m")
 
         colorPalette = self.getColorPalette(track.images[0].url)
 
-        output = f"{imageArt[0]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Music detected!', Ansi.BOLD, Ansi.RED)}"
-        output += f"{imageArt[1]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Name: ', Ansi.BOLD, Ansi.RED)}{track.name}"
-        output += f"{imageArt[2]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Artist: ', Ansi.BOLD, Ansi.RED)}{track.artist.name}"
-        output += f"{imageArt[3]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Album: ', Ansi.BOLD, Ansi.RED)}{track.album.name}"
+        # compute the best color to display text
+        colorRatios = [self.getContrast(color) for color in colorPalette.colors]
+        primaryColor = colorPalette.colors[indexOf(colorRatios, min(colorRatios))]
+
+        if min(colorRatios) > 1/2:
+            # print(f"no ideal contrast found, defaulting to pure white, got {min(colorRatios)}")
+            primaryColor= Color((255,255,255, 1), 100)
+
+
+        output = f"{imageArt[0]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Music detected!', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}"
+        output += f"{imageArt[1]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Name: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{track.name}"
+        output += f"{imageArt[2]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Artist: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{track.artist.name}"
+        output += f"{imageArt[3]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Album: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{track.album.name}"
         output += f"{imageArt[4]}{Ansi.DEFAULT}{self.padding}{self.delimiter}"
 
         output += f"{imageArt[5]}{Ansi.DEFAULT}{self.padding}"
         if self.config.source == "LASTFM":
-            output += f"{Ansi.formatText('LastFM Username: ', Ansi.BOLD, Ansi.RED)}{self.api.username}"
+            output += f"{Ansi.formatText('LastFM Username: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{self.api.username}"
 
-
-        # display the color palette blocks (2 for for 2 lines)
+        # display the color palette blocks (2 "for" for 2 lines)
         output += f"{imageArt[6]}"
         output += f"{imageArt[7]}{Ansi.DEFAULT}{self.padding}"
         for color in colorPalette.colors[0:6]:
@@ -103,7 +116,6 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
             output += f"{line}{Ansi.DEFAULT}"
 
         output += Ansi.DEFAULT
-
 
         return output
 
@@ -126,3 +138,20 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
     def showNotPlaying(self):
         self._clearTerminal()
         print("No music currently playing!")
+
+    def getContrast(self, color: Color) -> float:
+        """Return the color contrast compared to the background assuming the background is pure black."""
+
+        # s/o https://dev.to/alvaromontoro/building-your-own-color-contrast-checker-4j7o
+        # luminance
+        def computeColorParts(value: int):
+            value /= 255
+            return value / 12.92 if value <= 0.03928 else math.pow((value + 0.055) / 1.055, 2.4)
+
+        colorLuminance = 0.2126 * computeColorParts(color.rgb[0]) + 0.7152 * computeColorParts(
+            color.rgb[1]) + 0.0722 * computeColorParts(color.rgb[2])
+
+        ratio = (0.05 / (colorLuminance + 0.05))
+
+        # let's assume a terminal display is a small text
+        return ratio
