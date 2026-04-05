@@ -66,3 +66,8 @@ class LastFM:
     @property
     def totalScrobbles(self): return self.totalScrobbles if self.totalScrobbles is not None else \
         self._callApi()["recenttracks"]["@attr"]["total"]
+
+
+class Spotify:
+    """Class to interact with Spotify's API."""
+    pass
