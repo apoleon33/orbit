@@ -33,7 +33,7 @@ class LastFM:
 
     baseUrl: str = "https://ws.audioscrobbler.com/2.0/"
 
-    totalScrobbles: str | None
+    _totalScrobbles: str | None
 
     ERROR_MESSAGE = "Error occured while fetching LastmFM's api:"
 
@@ -64,5 +64,5 @@ class LastFM:
     def username(self): return self.params.user
 
     @property
-    def totalScrobbles(self): return self.totalScrobbles if self.totalScrobbles is not None else \
+    def totalScrobbles(self): return self._totalScrobbles if self._totalScrobbles is not None else \
         self._callApi()["recenttracks"]["@attr"]["total"]

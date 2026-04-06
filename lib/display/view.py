@@ -101,18 +101,19 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
         output += f"{imageArt[5]}{Ansi.DEFAULT}{self.padding}"
         if self.config.source == "LASTFM":
             output += f"{Ansi.formatText('LastFM Username: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{self.api.username}"
+            output += f"{imageArt[6]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('total scrobbles: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{self.api.totalScrobbles}"
 
         # display the color palette blocks (2 "for" for 2 lines)
-        output += f"{imageArt[6]}"
-        output += f"{imageArt[7]}{Ansi.DEFAULT}{self.padding}"
+        output += f"{imageArt[7]}"
+        output += f"{imageArt[8]}{Ansi.DEFAULT}{self.padding}"
         for color in colorPalette.colors[0:6]:
             output += f"{Ansi.applyColor(color.rgb)}███"
 
-        output += f"{imageArt[8]}{Ansi.DEFAULT}{self.padding}"
+        output += f"{imageArt[9]}{Ansi.DEFAULT}{self.padding}"
         for color in colorPalette.colors[6:]:
             output += f"{Ansi.applyColor(color.rgb)}███"
 
-        for line in imageArt[9:]:
+        for line in imageArt[10:]:
             output += f"{line}{Ansi.DEFAULT}"
 
         output += Ansi.DEFAULT
