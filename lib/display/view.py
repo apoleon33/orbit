@@ -51,6 +51,8 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
     """Display the album cover as well as the tracks information in the terminal."""
     padding = "     "
 
+    _rowIndex: int = 0  # is used to keep track when lining up everything
+
     def __init__(self, api, configFile: ConfigFile):
         super().__init__(api)
         AppSettings.__init__(self, configFile)
@@ -87,33 +89,32 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
         colorRatios = [self.getContrast(color) for color in colorPalette.colors]
         primaryColor = colorPalette.colors[indexOf(colorRatios, min(colorRatios))]
 
-        if min(colorRatios) > 1/2:
+        if min(colorRatios) > 1 / 2:
             # print(f"no ideal contrast found, defaulting to pure white, got {min(colorRatios)}")
-            primaryColor= Color((255,255,255, 1), 100)
+            primaryColor = Color((255, 255, 255, 1), 100)
 
+        output = f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Music detected!', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}"
+        output += f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Name: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{track.name}"
+        output += f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Artist: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{track.artist.name}"
+        output += f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Album: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{track.album.name}"
+        output += f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}{self.delimiter}"
 
-        output = f"{imageArt[0]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Music detected!', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}"
-        output += f"{imageArt[1]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Name: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{track.name}"
-        output += f"{imageArt[2]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Artist: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{track.artist.name}"
-        output += f"{imageArt[3]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('Album: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{track.album.name}"
-        output += f"{imageArt[4]}{Ansi.DEFAULT}{self.padding}{self.delimiter}"
-
-        output += f"{imageArt[5]}{Ansi.DEFAULT}{self.padding}"
+        output += f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}"
         if self.config.source == "LASTFM":
             output += f"{Ansi.formatText('LastFM Username: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{self.api.username}"
-            output += f"{imageArt[6]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('total scrobbles: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{self.api.totalScrobbles}"
+            output += f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('total scrobbles: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{self.api.totalScrobbles}"
 
         # display the color palette blocks (2 "for" for 2 lines)
-        output += f"{imageArt[7]}"
-        output += f"{imageArt[8]}{Ansi.DEFAULT}{self.padding}"
+        output += f"{imageArt[self.index]}"
+        output += f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}"
         for color in colorPalette.colors[0:6]:
             output += f"{Ansi.applyColor(color.rgb)}███"
 
-        output += f"{imageArt[9]}{Ansi.DEFAULT}{self.padding}"
+        output += f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}"
         for color in colorPalette.colors[6:]:
             output += f"{Ansi.applyColor(color.rgb)}███"
 
-        for line in imageArt[10:]:
+        for line in imageArt[self.index:]:
             output += f"{line}{Ansi.DEFAULT}"
 
         output += Ansi.DEFAULT
@@ -156,3 +157,9 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
 
         # let's assume a terminal display is a small text
         return ratio
+
+    @property
+    def index(self) -> int:
+        assert self._rowIndex <= self.cover_dimensions
+        self._rowIndex += 1
+        return self._rowIndex - 1
