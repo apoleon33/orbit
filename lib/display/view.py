@@ -119,6 +119,9 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
 
         output += Ansi.DEFAULT
 
+        # reset the index
+        self._rowIndex = 0
+
         return output
 
     def display(self):
