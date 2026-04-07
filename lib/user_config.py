@@ -35,6 +35,8 @@ class ConfigFile:
         "Your Last.fm API key."
         username: str
         "Your Last.fm username."
+        extended_info: bool
+        "Wether to display the lastfm username and the scrobble count in the Terminal"
 
     @property
     def lastfm(self):
@@ -42,6 +44,7 @@ class ConfigFile:
         return self.Lastfm(
             api_key=self.__config['LASTFM']['api_key'],
             username=self.__config['LASTFM']['username'],
+            extended_info=self.__config['LASTFM']['extended_info'],
         ) if self.source == 'LASTFM' else None
 
     @dataclass

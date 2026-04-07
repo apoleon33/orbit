@@ -100,7 +100,7 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
         output += f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}{self.delimiter}"
 
         output += f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}"
-        if self.config.source == "LASTFM":
+        if self.config.source == "LASTFM" and self.config.lastfm.extended_info:
             output += f"{Ansi.formatText('LastFM Username: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{self.api.username}"
             output += f"{imageArt[self.index]}{Ansi.DEFAULT}{self.padding}{Ansi.formatText('total scrobbles: ', Ansi.BOLD, Ansi.applyColor(primaryColor.rgb))}{self.api.totalScrobbles}"
 

@@ -17,6 +17,9 @@ api_key = ""
 # Your Last.fm username
 username = "apoleon33"
 
+# wether to display the lastfm username and the scrobble count
+extended_info = true
+
 [terminal]
 # Size of the album cover displayed
 cover_dimension = 20
