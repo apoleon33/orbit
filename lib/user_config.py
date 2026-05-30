@@ -90,7 +90,7 @@ class Arguments:
         self.once = once
 
     @staticmethod
-    def createFromGetOpt(output: tuple) -> Arguments:
+    def createFromGetOpt(output: tuple):
         """create an Arguments object from those acquired via getopt"""
         argument = Arguments()
         arguments, value = output

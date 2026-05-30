@@ -76,7 +76,7 @@ class Track(LastFMEntity):
         self.url = url
 
     @staticmethod
-    def empty() -> Track:
+    def empty():
         """ Create an empty track """
         return Track("", "", Artist("", ""), Album( "", ""), [], "")
 
