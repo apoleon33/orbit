@@ -1,3 +1,5 @@
+from typing import Any
+
 import requests
 
 from lib.track import Track
@@ -37,6 +39,9 @@ class LastFM:
 
     ERROR_MESSAGE = "Error occured while fetching LastmFM's api:"
 
+    # to avoid stopping the program on error 8
+    _previousCall: Any
+
     def __init__(self, params: Params):
         self.params = params
 
@@ -44,9 +49,13 @@ class LastFM:
         call = requests.get(f"{self.baseUrl}{self.params}").json()
 
         if "error" in call:
-            raise RuntimeError(f"{self.ERROR_MESSAGE} {call['message']}")
+            if call['error'] == 8:
+                call = self._previousCall
+            else:
+                raise RuntimeError(f"{self.ERROR_MESSAGE} {call['message']}")
 
         self._totalScrobbles = call["recenttracks"]["@attr"]["total"]
+        self._previousCall = call
 
         return call
 
