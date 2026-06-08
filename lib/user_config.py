@@ -2,7 +2,6 @@ from abc import ABC
 from dataclasses import dataclass
 
 import toml
-from click import argument
 
 
 class ConfigFile:

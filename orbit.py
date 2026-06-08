@@ -3,7 +3,7 @@ import time
 from lib.api import LastFM, Params
 from lib.user_config import ConfigFile, Arguments
 from lib.display.display_manager import DisplayManager
-from lib.display.view import Terminal
+from lib.display.terminal import Terminal
 
 import getopt, sys
 
