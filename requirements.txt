@@ -5,3 +5,4 @@ climage>=0.2.2,<0.3.0
 
 toml~=0.10.2
 fire
+sdbus>=0.12.0
