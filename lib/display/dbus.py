@@ -8,13 +8,8 @@ from lib.track import ColoredTrack
 class DbusInterface(DbusInterfaceCommonAsync,
                     interface_name='org.apoleon.orbit'):
 
-    @dbus_signal_async(signal_signature='(ss)')
+    @dbus_signal_async(signal_signature='(ssssssss)')
     def currentTrack(self) -> tuple:
-        # name, mbid, artist, album, url, color1, color2, color3; color4, color5
-        return NotImplementedError
-
-    @dbus_signal_async(signal_signature='i')
-    def hmmm(self) -> int:
         # name, mbid, artist, album, url, color1, color2, color3; color4, color5
         raise NotImplementedError
 
@@ -30,9 +25,14 @@ class Dbus(RequestlessDisplay):
     def convertTrackToDbus(track: ColoredTrack) -> tuple:
         return (
             track.name,
-            track.album.name
+            track.album.name,
+            track.artist.name,
+            str(track.palette.colors[0].hex),
+            str(track.palette.colors[1].hex),
+            str(track.palette.colors[2].hex),
+            str(track.palette.colors[3].hex),
+            str(track.palette.colors[4].hex),
         )
 
     def show(self, track: ColoredTrack):
         self.exportObject.currentTrack.emit(Dbus.convertTrackToDbus(track))
-        self.exportObject.hmmm.emit(12)
