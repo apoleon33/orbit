@@ -8,10 +8,24 @@ from lib.track import ColoredTrack
 class DbusInterface(DbusInterfaceCommonAsync,
                     interface_name='org.apoleon.orbit'):
 
-    @dbus_signal_async(signal_signature='(ssssssss)')
+    track: tuple = ("", "", "", "", "", "", "", "")
+
+    @dbus_property_async(property_signature=f'(sssssssssssssss)')
     def currentTrack(self) -> tuple:
-        # name, mbid, artist, album, url, color1, color2, color3; color4, color5
-        raise NotImplementedError
+        if len(self.track) == 15:
+            return self.track
+        elif len(self.track) > 15:
+            return self.track[:15]
+        else:
+            return self.track + tuple('#000000' for missing in range(15- len(self.track)))
+
+
+def convertTrackToDbus(track: ColoredTrack) -> tuple:
+    return (
+        track.name,
+        track.album.name,
+        track.artist.name,
+    ) + tuple(str(color.hex) for color in track.palette.colors)
 
 
 class Dbus(RequestlessDisplay):
@@ -21,18 +35,5 @@ class Dbus(RequestlessDisplay):
         await request_default_bus_name_async('org.apoleon.orbit')
         self.exportObject.export_to_dbus('/')
 
-    @staticmethod
-    def convertTrackToDbus(track: ColoredTrack) -> tuple:
-        return (
-            track.name,
-            track.album.name,
-            track.artist.name,
-            str(track.palette.colors[0].hex),
-            str(track.palette.colors[1].hex),
-            str(track.palette.colors[2].hex),
-            str(track.palette.colors[3].hex),
-            str(track.palette.colors[4].hex),
-        )
-
     def show(self, track: ColoredTrack):
-        self.exportObject.currentTrack.emit(Dbus.convertTrackToDbus(track))
+        self.exportObject.track = convertTrackToDbus(track)
