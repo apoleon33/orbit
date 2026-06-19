@@ -7,7 +7,7 @@ refresh_interval = 15
 source = "LASTFM"
 
 # List of medium the color palette will be displayed to
-# Possible values: ["terminal", "LED"]
+# Possible values: ["terminal", "LED", "dbus"]
 outputs=["terminal"]
 
 [LASTFM]
