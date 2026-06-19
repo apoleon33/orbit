@@ -8,7 +8,7 @@ from lib.track import ColoredTrack
 class DbusInterface(DbusInterfaceCommonAsync,
                     interface_name='org.apoleon.orbit'):
 
-    track: tuple = ("", "", "", "", "", "", "", "")
+    track: tuple = tuple("" for i in range(15))
 
     @dbus_property_async(property_signature=f'(sssssssssssssss)')
     def currentTrack(self) -> tuple:
@@ -37,3 +37,6 @@ class Dbus(RequestlessDisplay):
 
     def show(self, track: ColoredTrack):
         self.exportObject.track = convertTrackToDbus(track)
+
+    def showNotPlaying(self):
+        self.exportObject.track = ("No media playing",) + tuple("" for i in range(14))
