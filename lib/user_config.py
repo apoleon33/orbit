@@ -6,7 +6,7 @@ from click import argument
 
 
 class ConfigFile:
-    # should reflect what's in config.toml
+    # should reflect what can be in config.toml
 
     def __init__(self, filepath):
         with open(filepath, 'r') as f:
