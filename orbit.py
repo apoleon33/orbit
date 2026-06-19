@@ -1,13 +1,14 @@
-import time
+import asyncio
 
 from lib.api import LastFM, Params
+from lib.display.dbus import Dbus
 from lib.user_config import ConfigFile, Arguments
 from lib.display.display_manager import DisplayManager
 from lib.display.view import Terminal
 
 import getopt, sys
 
-if __name__ == "__main__":
+async def main() -> None:
     # basic command line handling
     args = sys.argv[1:]
     options = "ho"
@@ -43,6 +44,10 @@ if __name__ == "__main__":
                     source,
                     configFile
                 ))
+            case "dbus":
+                displayManager.displays.append(Dbus())
+                await displayManager.displays[-1].init()
+
             case _:
                 raise RuntimeError(
                     f"Output '{output}' found in config file does not match any of the possible values ('terminal', 'LED')")
@@ -52,4 +57,7 @@ if __name__ == "__main__":
     else:
         while True:
             displayManager.display()
-            time.sleep(configFile.refresh_interval)
+            await asyncio.sleep(configFile.refresh_interval)
+
+if __name__ == "__main__":
+    asyncio.run(main())
