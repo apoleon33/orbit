@@ -5,6 +5,7 @@ from operator import indexOf
 
 import climage
 import requests
+from PIL import UnidentifiedImageError
 from Pylette import Color, Palette
 
 from lib.display.display import Display
@@ -75,7 +76,16 @@ class Terminal(Display, RequestlessDisplay, AppSettings):
         tempFile.write(img)
         tempFile.close()
 
-        imageArt = climage.convert('temp.jpg',
+        try:
+            imageArt = climage.convert('temp.jpg',
+                                   is_truecolor=self.config.terminal.color_depth == "true_color",
+                                   is_256color=self.config.terminal.color_depth == "256",
+                                   is_16color=self.config.terminal.color_depth == "16",
+                                   is_8color=self.config.terminal.color_depth == "8",
+                                   width=self.cover_dimensions
+                                   ).split("[0m")
+        except UnidentifiedImageError:
+            imageArt = climage.convert('assets/placeholder.png',
                                    is_truecolor=self.config.terminal.color_depth == "true_color",
                                    is_256color=self.config.terminal.color_depth == "256",
                                    is_16color=self.config.terminal.color_depth == "16",
