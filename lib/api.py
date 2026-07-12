@@ -1,6 +1,8 @@
 from typing import Any
 
 import requests
+import spotipy
+from spotipy import SpotifyOAuth
 
 from lib.track import Track
 from lib.user_config import ConfigFile, AppSettings
@@ -27,6 +29,11 @@ class Params(AppSettings):
 
     def __str__(self):
         return f"?api_key={self.apiKey}&method={self.method}&user={self.user}&format={self.format}"
+
+
+class SpotifyParams(AppSettings):
+    client_id: str
+    client_secret: str
 
 
 class LastFM:
@@ -75,3 +82,20 @@ class LastFM:
     @property
     def totalScrobbles(self): return self._totalScrobbles if self._totalScrobbles is not None else \
         self._callApi()["recenttracks"]["@attr"]["total"]
+
+
+class Spotify:
+    """Class to interact with Spotify's API."""
+    sp: spotipy.Spotify
+    redirect_uri: str = "https://example.com"  # maybe user config?
+    scope = "user-read-currently-playing"
+
+    def __init__(self, params: SpotifyParams):
+        self.sp = spotipy.Spotify(
+            auth_manager=SpotifyOAuth(
+                client_id=params.client_id,
+                client_secret=params.client_secret,
+                redirect_uri=self.redirect_uri,
+                scope=self.scope,
+            )
+        )
